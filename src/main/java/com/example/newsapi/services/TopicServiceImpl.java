@@ -1,6 +1,8 @@
 package com.example.newsapi.services;
 
+import com.example.newsapi.dtos.AddSourceDTO;
 import com.example.newsapi.jpa.TopicRepository;
+import com.example.newsapi.models.Source;
 import com.example.newsapi.models.Topic;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,8 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic addTopic(Topic topic) {
-        return topicRepository.save(topic);
+    public Topic addTopic(AddSourceDTO requestDTO) {
+        Topic savedTopic = new Topic(requestDTO.getName());
+        return topicRepository.save(savedTopic);
     }
 }

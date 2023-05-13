@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+#  auth-service:
+#    image: aibaribray/production:latest
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - database
+  database:
+    image: postgres:latest
+    platform: linux/x86_64
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1402
+      POSTGRES_DB: newsdb
+    ports:
+      - "5432:5432"
