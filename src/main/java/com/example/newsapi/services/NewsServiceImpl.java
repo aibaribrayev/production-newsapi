@@ -1,6 +1,9 @@
 package com.example.newsapi.services;
 
 import com.example.newsapi.dtos.AddNewsRequest;
+import com.example.newsapi.dtos.AddSourceDTO;
+import com.example.newsapi.errors.SourceNotFoundException;
+import com.example.newsapi.errors.TopicNotFoundException;
 import com.example.newsapi.jpa.NewsRepository;
 import com.example.newsapi.jpa.SourceRepository;
 import com.example.newsapi.jpa.TopicRepository;
@@ -34,11 +37,67 @@ public class NewsServiceImpl implements NewsService {
         Optional<Source> source = sourceRepository.findById(requestDTO.getSourceId());
         Optional<Topic> topic = topicRepository.findById(requestDTO.getTopicId());
 
-        if (source.isEmpty() || topic.isEmpty()) {
-            return null;
+        if (source.isEmpty()) {
+            throw new SourceNotFoundException("can't find source with id:"+requestDTO.getSourceId());
+        }
+
+        if (topic.isEmpty()) {
+            throw new TopicNotFoundException("can't find source with id:"+requestDTO.getSourceId());
         }
 
         News news = new News(requestDTO.getTitle(), requestDTO.getDescription(), source.get(), topic.get());
         return newsRepository.save(news);
+    }
+
+    @Override
+    public News getNewsById(Long id) {
+        Optional<News> news = newsRepository.findById(id);
+
+        if(news.isEmpty())
+            throw new SourceNotFoundException("can't find news with id:"+id);
+
+        return news.get();
+    }
+
+    @Override
+    public News updateNews(Long id, AddNewsRequest requestDTO) {
+
+        Optional<News> currnetNews = newsRepository.findById(id);
+
+        Optional<Source> source = sourceRepository.findById(requestDTO.getSourceId());
+
+        Optional<Topic> topic = topicRepository.findById(requestDTO.getTopicId());
+
+        if(currnetNews.isEmpty())
+            throw new SourceNotFoundException("can't find news with id:"+id);
+
+        if (source.isEmpty()) {
+            throw new SourceNotFoundException("can't find source with id:"+requestDTO.getSourceId());
+        }
+
+        if (topic.isEmpty()) {
+            throw new TopicNotFoundException("can't find source with id:"+requestDTO.getSourceId());
+        }
+
+
+        News updatedNews = currnetNews.get();
+
+        updatedNews.setTitle(requestDTO.getTitle());
+        updatedNews.setDescription(requestDTO.getDescription());
+        updatedNews.setSource(source.get());
+        updatedNews.setTopic(topic.get());
+
+        return newsRepository.save(updatedNews);
+    }
+    @Override
+    public void deleteNews(Long id) {
+        Optional<News> newsOptional = newsRepository.findById(id);
+
+        if (newsOptional.isEmpty()) {
+            throw new SourceNotFoundException("can't find news with id:"+id);
+        }
+
+        News news = newsOptional.get();
+        newsRepository.delete(news);
     }
 }
