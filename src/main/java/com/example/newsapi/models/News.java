@@ -13,12 +13,9 @@ public class News {
     @ManyToOne(fetch = FetchType.LAZY)
     private Source source;
 
-//    @Column(name = "source_id", nullable = false)
-//    private Long sourceId;
-
-//    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Topic topic;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Topic topic;
 
     @Column(name = "title")
     private String title;
@@ -26,12 +23,11 @@ public class News {
     @Column(name = "description")
     private String description;
 
-    public News(String title, String description, Source source, Long sourceId) {
+    public News(String title, String description, Source source, Topic topic) {
         this.source = source;
+        this.topic = topic;
         this.title = title;
         this.description = description;
-//        this.sourceId = sourceId;
-
     }
 
     public News() {
@@ -53,13 +49,13 @@ public class News {
         this.source = source;
     }
 
-//    public Topic getTopic() {
-//        return topic;
-//    }
-//
-//    public void setTopic(Topic topic) {
-//        this.topic = topic;
-//    }
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
 
     public String getTitle() {
         return title;
@@ -77,20 +73,13 @@ public class News {
         this.description = description;
     }
 
-//    public Long getSourceId() {
-//        return sourceId;
-//    }
-//
-//    public void setSourceId(Long sourceId) {
-//        this.sourceId = sourceId;
-//    }
 
     @Override
     public String toString() {
         return "News{" +
                 "id=" + id +
-                ", source=" + source +
-//                ", sourceId=" + sourceId +
+                ", source_name=" + source.getName() +
+                ", source_id=" + source.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 '}';

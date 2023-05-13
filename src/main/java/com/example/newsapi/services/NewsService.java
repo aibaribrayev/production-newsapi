@@ -8,7 +8,6 @@ import java.util.List;
 
 @Service
 public interface NewsService {
-
     public List<News> getAllNews();
     public News addNews(AddNewsRequest requestDTO);
 }
