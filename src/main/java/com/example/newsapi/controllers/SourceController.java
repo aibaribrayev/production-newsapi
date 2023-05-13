@@ -25,7 +25,7 @@ public class SourceController {
     }
 
     @PostMapping("")
-    public Source addNews(@RequestBody Source source) {
+    public Source addSource(@RequestBody Source source) {
         return sourceService.addSource(source);
     }
 }
