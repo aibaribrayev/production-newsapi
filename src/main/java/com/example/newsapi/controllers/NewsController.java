@@ -3,6 +3,9 @@ package com.example.newsapi.controllers;
 import com.example.newsapi.dtos.AddNewsRequest;
 import com.example.newsapi.models.News;
 import com.example.newsapi.services.NewsServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +28,6 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    @GetMapping("")
-    public List<News> getAllNews() {
-        return newsService.getAllNews();
-    }
-
     @PostMapping("")
     public ResponseEntity<News> addNews(@RequestBody AddNewsRequest requestDTO) {
 
@@ -46,12 +44,37 @@ public class NewsController {
     @GetMapping("/{id}")
     public EntityModel<News> getNewsById(@PathVariable Long id) {
         News news = newsService.getNewsById(id);
-
         EntityModel<News> entityModel = EntityModel.of(news);
-        WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).getAllNews());
+        WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).getAllNews(0, 20));
         entityModel.add(link.withRel("all-news"));
 
         return entityModel;
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Page<News>> getAllNews(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<News> newsPage = newsService.getAllNews(pageable);
+        return ResponseEntity.ok(newsPage);
+    }
+
+    @GetMapping("/source/{sourceId}")
+    public ResponseEntity<Page<News>> getNewsBySourceId(@PathVariable Long sourceId,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<News> newsPage = newsService.getNewsBySource(sourceId, pageable);
+        return ResponseEntity.ok(newsPage);
+    }
+
+    @GetMapping("/topic/{topicId}")
+    public ResponseEntity<Page<News>> getNewsByTopicId(@PathVariable Long topicId,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<News> newsPage = newsService.getNewsByTopic(topicId, pageable);
+        return ResponseEntity.ok(newsPage);
     }
 
     @PutMapping("/{id}")

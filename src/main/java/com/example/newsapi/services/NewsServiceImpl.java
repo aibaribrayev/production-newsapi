@@ -1,7 +1,6 @@
 package com.example.newsapi.services;
 
 import com.example.newsapi.dtos.AddNewsRequest;
-import com.example.newsapi.dtos.AddSourceDTO;
 import com.example.newsapi.errors.SourceNotFoundException;
 import com.example.newsapi.errors.TopicNotFoundException;
 import com.example.newsapi.jpa.NewsRepository;
@@ -10,6 +9,8 @@ import com.example.newsapi.jpa.TopicRepository;
 import com.example.newsapi.models.News;
 import com.example.newsapi.models.Source;
 import com.example.newsapi.models.Topic;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +27,9 @@ public class NewsServiceImpl implements NewsService {
         this.sourceRepository = sourceRepository;
         this.topicRepository = topicRepository;
     }
-
-    @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public Page<News> getAllNews(Pageable pageable) {
+        return newsRepository.findAll(pageable);
     }
-
     @Override
     public News addNews(AddNewsRequest requestDTO) {
         Optional<Source> source = sourceRepository.findById(requestDTO.getSourceId());
@@ -99,5 +97,23 @@ public class NewsServiceImpl implements NewsService {
 
         News news = newsOptional.get();
         newsRepository.delete(news);
+    }
+
+    public Page<News> getNewsBySource(Long sourceId, Pageable pageable) {
+        Optional<Source> source = sourceRepository.findById(sourceId);
+
+        if(source.isEmpty())
+            throw new SourceNotFoundException("can't find source with id:"+sourceId);
+
+        return newsRepository.findBySourceId(source.get().getId(), pageable);
+    }
+
+    public Page<News> getNewsByTopic(Long topicId, Pageable pageable) {
+        Optional<Source> topic = sourceRepository.findById(topicId);
+
+        if(topic.isEmpty())
+            throw new TopicNotFoundException("can't find topic with id:"+topicId);
+
+        return newsRepository.findByTopicId(topic.get().getId(), pageable);
     }
 }
