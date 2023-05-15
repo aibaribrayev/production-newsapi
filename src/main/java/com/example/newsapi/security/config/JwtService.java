@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "7134743777217A25432A462D4A614E645267556B58703272357538782F413F44";
+    private static final String SECRET_KEY = "4B6150645267556B58703273357638792F423F4528482B4D6251655468566D59";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -47,29 +47,6 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
-
-//
-//    public String generateRefreshToken(
-//            UserDetails userDetails
-//    ) {
-//        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
-//    }
-//
-//    private String buildToken(
-//            Map<String, Object> extraClaims,
-//            UserDetails userDetails,
-//            long expiration
-//    ) {
-//        return Jwts
-//                .builder()
-//                .setClaims(extraClaims)
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-//                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-//                .compact();
-//    }
-//
 
     private boolean isExpired(String token) {
         return extractExpiration(token).before(new Date());
