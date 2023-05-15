@@ -109,7 +109,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public Page<News> getNewsByTopic(Long topicId, Pageable pageable) {
-        Optional<Source> topic = sourceRepository.findById(topicId);
+        Optional<Topic> topic = topicRepository.findById(topicId);
 
         if(topic.isEmpty())
             throw new TopicNotFoundException("can't find topic with id:"+topicId);

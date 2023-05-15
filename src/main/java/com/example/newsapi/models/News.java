@@ -11,10 +11,12 @@ public class News {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "source_id", nullable=false)
     private Source source;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id", nullable=false)
     private Topic topic;
 
     @Column(name = "title")
@@ -22,6 +24,8 @@ public class News {
 
     @Column(name = "description")
     private String description;
+
+
 
     public News(String title, String description, Source source, Topic topic) {
         this.source = source;
@@ -73,6 +77,13 @@ public class News {
         this.description = description;
     }
 
+    public Long getSourceId() {
+        return source != null ? source.getId() : null;
+    }
+
+    public Long getTopicId() {
+        return topic != null ? topic.getId() : null;
+    }
 
     @Override
     public String toString() {
