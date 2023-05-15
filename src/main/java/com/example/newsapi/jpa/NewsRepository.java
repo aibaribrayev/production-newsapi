@@ -1,6 +1,7 @@
 package com.example.newsapi.jpa;
 
 import com.example.newsapi.models.News;
+import com.example.newsapi.models.Source;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     @Query("SELECT n FROM News n WHERE n.topic.id = :topicId")
     Page<News> findByTopicId(@Param("topicId") Long topicId, Pageable pageable);
+
+    Long countBySource(Source source);
 }
 
