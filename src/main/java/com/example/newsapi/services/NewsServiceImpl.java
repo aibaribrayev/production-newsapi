@@ -40,7 +40,7 @@ public class NewsServiceImpl implements NewsService {
         }
 
         if (topic.isEmpty()) {
-            throw new TopicNotFoundException("can't find source with id:"+requestDTO.getSourceId());
+            throw new TopicNotFoundException("can't find topic with id:"+requestDTO.getSourceId());
         }
 
         News news = new News(requestDTO.getTitle(), requestDTO.getDescription(), source.get(), topic.get());
