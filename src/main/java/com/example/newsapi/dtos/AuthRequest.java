@@ -1,4 +1,4 @@
-package com.example.newsapi.security.auth;
+package com.example.newsapi.dtos;
 
 public class AuthRequest {
     private String email;

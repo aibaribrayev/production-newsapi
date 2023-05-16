@@ -1,6 +1,6 @@
-package com.example.newsapi.security.config;
+package com.example.newsapi.configs;
 
-import com.example.newsapi.security.user.UserRepository;
+import com.example.newsapi.jpa.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

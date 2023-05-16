@@ -1,5 +1,9 @@
-package com.example.newsapi.security.auth;
+package com.example.newsapi.controllers;
 
+import com.example.newsapi.services.AuthService;
+import com.example.newsapi.dtos.AuthRequest;
+import com.example.newsapi.dtos.AuthResponse;
+import com.example.newsapi.dtos.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package com.example.newsapi.security.user;
+package com.example.newsapi.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
@@ -15,8 +15,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "email")
     private String email;
+    @Column (name = "password")
     private String password;
 
     public User(String name, String email, String password) {

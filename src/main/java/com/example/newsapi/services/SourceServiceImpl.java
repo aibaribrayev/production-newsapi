@@ -1,6 +1,6 @@
 package com.example.newsapi.services;
 
-import com.example.newsapi.dtos.AddSourceDTO;
+import com.example.newsapi.dtos.AddSourceDto;
 import com.example.newsapi.errors.SourceNotFoundException;
 import com.example.newsapi.jpa.SourceRepository;
 
@@ -34,13 +34,13 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
-    public Source addSource(AddSourceDTO requestDTO) {
+    public Source addSource(AddSourceDto requestDTO) {
         Source savedSource = new Source(requestDTO.getName());
         return sourceRepository.save(savedSource);
     }
 
     @Override
-    public Source updateSource(Long id, AddSourceDTO requestDTO) {
+    public Source updateSource(Long id, AddSourceDto requestDTO) {
         Optional<Source> currnetSource = sourceRepository.findById(id);
 
         if(currnetSource.isEmpty())

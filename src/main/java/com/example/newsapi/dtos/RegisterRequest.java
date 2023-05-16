@@ -1,9 +1,4 @@
-package com.example.newsapi.security.auth;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.example.newsapi.dtos;
 
 
 public class RegisterRequest {

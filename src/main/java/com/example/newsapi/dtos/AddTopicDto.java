@@ -1,6 +1,6 @@
 package com.example.newsapi.dtos;
 
-public class AddSourceDTO {
+public class AddTopicDto {
     private String name;
 
     public String getName() {

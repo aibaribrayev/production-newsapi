@@ -1,4 +1,4 @@
-package com.example.newsapi.scheduledStatsTask;
+package com.example.newsapi;
 
 import com.example.newsapi.jpa.NewsRepository;
 import com.example.newsapi.jpa.SourceRepository;
@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -18,17 +19,29 @@ import java.util.concurrent.*;
 public class SourcesStatisticsService {
     private final NewsRepository newsRepository;
     private final SourceRepository sourceRepository;
+    private final List<String> contentList = Collections.synchronizedList(new ArrayList<>());
+
 
     public SourcesStatisticsService(NewsRepository newsRepository, SourceRepository sourceRepository) {
         this.newsRepository = newsRepository;
         this.sourceRepository = sourceRepository;
     }
 
-   // @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "0 */2 * * * *")
-    public void generateNewsStatistics() {
+    private void accumulateContent(String content) {
+        contentList.add(content);
+    }
+    private void writeContentToFile(File file) {
+        try (FileWriter fileWriter = new FileWriter(file, true)) {
+            for (String content : contentList) {
+                fileWriter.append(content).append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        //create file called statistics_current_date.csv and add column titles
+    @Scheduled(cron = "0 0 0 * * *")
+    public void generateNewsStatistics() {
         File file = new File("statistics_" + LocalDate.now().toString() + ".csv");
         try(FileWriter fileWriter = new FileWriter(file, true)){
             fileWriter.append("Source ID,Source Name,Number of News").append(System.lineSeparator());
@@ -36,24 +49,22 @@ public class SourcesStatisticsService {
             e.printStackTrace();
         }
 
-        //divide tasks to threads
+        //create threads and tasks
         List<Source> sources = sourceRepository.findAll();
-        int numThreads = sources.size()/5;
+        int numThreads = sources.size()/5;//5 sources per 1 thread for testing only. You can increase the number of threads if necessary
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
 
         List<Callable<Void>> tasks = new ArrayList<>();
         for (Source source : sources) {
             tasks.add(() -> {
-                // Fetch news articles for each source and update the article count
                 Long newsCount = newsRepository.countBySource(source);
-                writeToFile(source.getId().toString() +
-                        "," + source.getName() +
-                        "," + newsCount.toString(),
-                        file);
+                String content = source.getId().toString() + "," + source.getName() + "," + newsCount.toString();
+                accumulateContent(content);
                 return null;
             });
         }
 
+        //run tasks on threads
         try {
             List<Future<Void>> futures = executorService.invokeAll(tasks);
             for (Future<Void> future : futures) {
@@ -65,16 +76,7 @@ public class SourcesStatisticsService {
             executorService.shutdown();
         }
 
-    }
-
-    private synchronized void writeToFile(String content, File file) {
-        try (FileWriter fileWriter = new FileWriter(file, true)) {
-            fileWriter.append(content.toString()).append(System.lineSeparator());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // write content to file
+        writeContentToFile(file);
     }
 }
-
-
-

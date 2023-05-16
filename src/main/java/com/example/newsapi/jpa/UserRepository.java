@@ -1,7 +1,7 @@
-package com.example.newsapi.security.user;
+package com.example.newsapi.jpa;
 import java.util.Optional;
 
-import com.example.newsapi.security.user.User;
+import com.example.newsapi.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {

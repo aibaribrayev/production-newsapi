@@ -1,12 +1,8 @@
 package com.example.newsapi.controllers;
 
-import com.example.newsapi.dtos.AddSourceDTO;
-import com.example.newsapi.errors.SourceNotFoundException;
-import com.example.newsapi.models.News;
+import com.example.newsapi.dtos.AddSourceDto;
 import com.example.newsapi.models.Source;
-import com.example.newsapi.services.NewsServiceImpl;
 import com.example.newsapi.services.SourceServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -46,7 +41,7 @@ public class SourceController {
         return entityModel;
     }
     @PostMapping("")
-    public ResponseEntity<Source> addSource(@RequestBody AddSourceDTO requestDTO) {
+    public ResponseEntity<Source> addSource(@RequestBody AddSourceDto requestDTO) {
         Source savedSource = sourceService.addSource(requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -57,7 +52,7 @@ public class SourceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSource(@PathVariable Long id, @RequestBody AddSourceDTO requestDTO){
+    public ResponseEntity<Object> updateSource(@PathVariable Long id, @RequestBody AddSourceDto requestDTO){
         Source source = sourceService.updateSource(id, requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

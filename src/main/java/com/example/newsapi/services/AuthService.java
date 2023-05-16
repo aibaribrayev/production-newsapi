@@ -1,8 +1,10 @@
-package com.example.newsapi.security.auth;
+package com.example.newsapi.services;
 
-import com.example.newsapi.security.config.JwtService;
-import com.example.newsapi.security.user.User;
-import com.example.newsapi.security.user.UserRepository;
+import com.example.newsapi.dtos.AuthRequest;
+import com.example.newsapi.dtos.AuthResponse;
+import com.example.newsapi.dtos.RegisterRequest;
+import com.example.newsapi.models.User;
+import com.example.newsapi.jpa.UserRepository;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import org.springframework.security.authentication.AuthenticationManager;

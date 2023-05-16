@@ -1,5 +1,6 @@
-package com.example.newsapi.security.config;
+package com.example.newsapi.configs;
 
+import com.example.newsapi.auth.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,7 +28,7 @@ public class SecurityConfiguration  {
                .csrf()
                .disable()
                .authorizeHttpRequests()
-               .requestMatchers("/auth/**")
+               .requestMatchers("/auth/**","/swagger-ui/index.html")
                .permitAll()
                .anyRequest()
                .authenticated()

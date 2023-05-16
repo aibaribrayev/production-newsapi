@@ -1,5 +1,5 @@
 package com.example.newsapi.services;
-import com.example.newsapi.dtos.AddTopicDTO;
+import com.example.newsapi.dtos.AddTopicDto;
 import com.example.newsapi.errors.TopicNotFoundException;
 import com.example.newsapi.jpa.TopicRepository;
 import com.example.newsapi.models.Topic;
@@ -21,7 +21,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic addTopic(AddTopicDTO requestDTO) {
+    public Topic addTopic(AddTopicDto requestDTO) {
         Topic savedTopic = new Topic(requestDTO.getName());
         return topicRepository.save(savedTopic);
     }
@@ -37,7 +37,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic updateTopic(Long id, AddTopicDTO requestDTO) {
+    public Topic updateTopic(Long id, AddTopicDto requestDTO) {
         Optional<Topic> currentTopic = topicRepository.findById(id);
         if(currentTopic.isEmpty())
             throw new TopicNotFoundException("can't find topic with id:"+id);

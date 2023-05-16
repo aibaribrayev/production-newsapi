@@ -1,4 +1,5 @@
-package com.example.newsapi.security.config;
+package com.example.newsapi.auth;
+import com.example.newsapi.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
