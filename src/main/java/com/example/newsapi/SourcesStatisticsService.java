@@ -3,6 +3,8 @@ package com.example.newsapi;
 import com.example.newsapi.jpa.NewsRepository;
 import com.example.newsapi.jpa.SourceRepository;
 import com.example.newsapi.models.Source;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.List;
 import java.util.concurrent.*;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 @Service
 public class SourcesStatisticsService {
@@ -36,8 +32,9 @@ public class SourcesStatisticsService {
     private void accumulateContent(String content) {
         contentList.add(content);
     }
+
     private void writeContentToFile(File file) {
-        logger.info("writing to " + file);
+        logger.info("Writing to " + file);
         try (FileWriter fileWriter = new FileWriter(file, true)) {
             for (String content : contentList) {
                 fileWriter.append(content).append(System.lineSeparator());
@@ -51,25 +48,22 @@ public class SourcesStatisticsService {
     public void generateNewsStatistics() {
         contentList.clear();
         File file = new File("statistics_" + LocalDate.now().toString() + ".csv");
+
         try {
-            if(file.createNewFile()) {
-                logger.info("new file created");
+            if (file.createNewFile()) {
+                logger.info("New file created");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-
-        try{
-            FileWriter fileWriter = new FileWriter(file, true);
+        try (FileWriter fileWriter = new FileWriter(file, true)) {
             fileWriter.append("Source ID,Source Name,Number of News").append(System.lineSeparator());
-            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //create threads and tasks
+        // Create threads and tasks
         List<Source> sources = sourceRepository.findAll();
         int numThreads = (int) Math.ceil((double) sources.size() / 10); // Round up to the nearest integer
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
@@ -84,7 +78,7 @@ public class SourcesStatisticsService {
             });
         }
 
-        //run tasks on threads
+        // Run tasks on threads
         try {
             List<Future<Void>> futures = executorService.invokeAll(tasks);
             for (Future<Void> future : futures) {
@@ -96,8 +90,7 @@ public class SourcesStatisticsService {
             executorService.shutdown();
         }
 
-        // write content to file
+        // Write content to file
         writeContentToFile(file);
     }
 }
-
