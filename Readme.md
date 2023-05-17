@@ -7,9 +7,6 @@ JDK: Java 17 or compatible version.
 
 Docker: You can download Docker from the official website for your operating system.
 
-### Deployed application address 
-You can test the project on IP address: 
-
 ### Running the application locally with Docker
 Clone the repository to the desired folder. On the terminal navigate to the root directory of the project, and run: "docker-compose up". It will pull the docker image for the api from my docker hub repository and run the application and the database on docker containers. Once the containers have started, you can access the application at http://localhost:8080/swagger-ui/index.html.
 

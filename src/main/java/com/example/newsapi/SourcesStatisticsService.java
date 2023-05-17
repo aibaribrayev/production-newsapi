@@ -12,14 +12,21 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import java.util.List;
 import java.util.concurrent.*;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Service
 public class SourcesStatisticsService {
     private final NewsRepository newsRepository;
     private final SourceRepository sourceRepository;
     private final List<String> contentList = Collections.synchronizedList(new ArrayList<>());
+    private static final Logger logger = LoggerFactory.getLogger(SourcesStatisticsService.class);
 
     public SourcesStatisticsService(NewsRepository newsRepository, SourceRepository sourceRepository) {
         this.newsRepository = newsRepository;
@@ -30,6 +37,7 @@ public class SourcesStatisticsService {
         contentList.add(content);
     }
     private void writeContentToFile(File file) {
+        logger.info("writing to " + file);
         try (FileWriter fileWriter = new FileWriter(file, true)) {
             for (String content : contentList) {
                 fileWriter.append(content).append(System.lineSeparator());
@@ -39,30 +47,31 @@ public class SourcesStatisticsService {
         }
     }
 
-    //@Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void generateNewsStatistics() {
-        String rootDirectory = System.getProperty("user.dir");
-        String filePath = rootDirectory + "/statistics_" + LocalDate.now().toString() + ".csv";
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+        contentList.clear();
+        File file = new File("statistics_" + LocalDate.now().toString() + ".csv");
+        try {
+            if(file.createNewFile()) {
+                logger.info("new file created");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        try(FileWriter fileWriter = new FileWriter(file, true)){
+
+
+        try{
+            FileWriter fileWriter = new FileWriter(file, true);
             fileWriter.append("Source ID,Source Name,Number of News").append(System.lineSeparator());
+            fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         //create threads and tasks
         List<Source> sources = sourceRepository.findAll();
-        int numThreads = sources.size()/5;//5 sources per 1 thread for testing only. You can increase the number of threads if necessary
+        int numThreads = (int) Math.ceil((double) sources.size() / 5); // Round up to the nearest integer
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
 
         List<Callable<Void>> tasks = new ArrayList<>();
@@ -91,3 +100,4 @@ public class SourcesStatisticsService {
         writeContentToFile(file);
     }
 }
+

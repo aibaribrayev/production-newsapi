@@ -32,6 +32,11 @@ dependencies {
     implementation 'org.springframework.data:spring-data-rest-hal-explorer'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //debugging
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.slf4j:slf4j-api:2.0.5'
+    implementation 'ch.qos.logback:logback-classic:1.4.6'
 }
 
 bootBuildImage {
