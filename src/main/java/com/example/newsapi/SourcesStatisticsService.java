@@ -71,7 +71,7 @@ public class SourcesStatisticsService {
 
         //create threads and tasks
         List<Source> sources = sourceRepository.findAll();
-        int numThreads = (int) Math.ceil((double) sources.size() / 5); // Round up to the nearest integer
+        int numThreads = (int) Math.ceil((double) sources.size() / 10); // Round up to the nearest integer
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
 
         List<Callable<Void>> tasks = new ArrayList<>();

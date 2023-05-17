@@ -147,5 +147,5 @@ To get a list of news with given topic id send a get requset to ```/news/topic/{
 
 ### Scheduled statistical task
 - Daily at midnight a file statistics_date.csv containing the number of news for
-  each source is created. The task is performed on multiple threads. For testing purposes only the number of threads is set to 1 per 10 sources. It can be increased  if needed. 
+  each source is created. The task is performed on multiple threads. For testing purposes only the number of threads is set to 1 per 10 sources. It can be increased  if needed. The implementation of the task is in file SourcesStatisticsService located at java/com/example/newsapi.
 
