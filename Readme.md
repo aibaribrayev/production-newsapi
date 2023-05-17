@@ -14,8 +14,8 @@ You can also build a Docker image locally. I configured the "build.gradle" file 
 
 - First, make sure that Docker is running.
 - In the terminal navigate to the root directory of the project
-- and run ```./gradlew buildImage```. It will build an image called "newsapi:latest". 
-- If you want to use this image instead of the image from my docker repository, open the docker-compose.yaml file and change the image for the "app" service from ```aibar/newsapi:latest``` to ```newsapi:latest```.
+- and run ```./gradlew buildImage```. It will build an image called "newssapi:latest". 
+- If you want to use this image instead of the image from my docker repository, open the docker-compose.yaml file and change the image for the "app" service from ```aibar/newssapi:latest``` to ```newssapi:latest```.
 - Save and run in the terminal ```docker-compose up```. 
 
 Note: I added swagger-ui for documentation, but since I have also added spring security the requests with external instruments such as Postman or Insomnia is preferred. 
@@ -116,7 +116,7 @@ To delete a topic, send a DELETE request to /topic/{id}.
 - Get All News
 
     
-To retrieve all news articles, send a GET request to /news. You can optionally specify the pagination parameters page and size as query parameters. The default values are 0 for page and 10 for size.
+To retrieve all news, send a GET request to /news. You can optionally specify the pagination parameters page and size as query parameters. The default values are 0 for page and 10 for size.
 
 - Get News by ID
 
@@ -131,13 +131,19 @@ Please make sure to replace sourceId and topicId with the actual IDs of the corr
 
 - Update News
 
-To update an existing news article, send a PUT request to /news/{id}. Include the following JSON body with the updated information:
+To update an existing news, send a PUT request to /news/{id}. Include the following JSON body with the updated information:
 
     { "title": "Updated News Title", "description": "Updated News Description", "sourceId": 1, "topicId": 1 }
 
 - Delete News
 
 To delete a news article, send a DELETE request to ```/news/{id}```.
+
+- Getting all news with source id
+To get list of all news with given source id send a get requst to ```/news/source/{id}```. {id} here is the id of your source. You can optionally specify the pagination parameters page and size as query parameters. The default values are 0 for page and 10 for size.
+
+- Getting all news with topic id
+To get a list of news with given topic id send a get requset to ```/news/topic/{id}```. {id} here is the id of topic. You can optionally specify the pagination parameters page and size as query parameters. The default values are 0 for page and 10 for size.
 
 ### Scheduled statistical task
 - Daily at midnight a file statistics_date.csv containing the number of news for
