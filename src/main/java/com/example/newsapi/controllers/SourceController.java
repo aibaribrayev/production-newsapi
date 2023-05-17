@@ -1,6 +1,6 @@
 package com.example.newsapi.controllers;
 
-import com.example.newsapi.dtos.AddSourceDto;
+import com.example.newsapi.dtos.AddSourceRequest;
 import com.example.newsapi.models.Source;
 import com.example.newsapi.services.SourceServiceImpl;
 import org.springframework.hateoas.EntityModel;
@@ -41,7 +41,7 @@ public class SourceController {
         return entityModel;
     }
     @PostMapping("")
-    public ResponseEntity<Source> addSource(@RequestBody AddSourceDto requestDTO) {
+    public ResponseEntity<Source> addSource(@RequestBody AddSourceRequest requestDTO) {
         Source savedSource = sourceService.addSource(requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -52,7 +52,7 @@ public class SourceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSource(@PathVariable Long id, @RequestBody AddSourceDto requestDTO){
+    public ResponseEntity<Object> updateSource(@PathVariable Long id, @RequestBody AddSourceRequest requestDTO){
         Source source = sourceService.updateSource(id, requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -63,7 +63,7 @@ public class SourceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteSource(@PathVariable Long id) {
         sourceService.deleteSource(id);
         return ResponseEntity.noContent().build();
     }

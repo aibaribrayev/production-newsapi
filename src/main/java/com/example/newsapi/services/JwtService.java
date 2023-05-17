@@ -9,12 +9,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "4B6150645267556B58703273357638792F423F4528482B4D6251655468566D59";
+    @Value("${jwt.secretKey}")
+    private String SECRET_KEY;
+
+    @Value("${jwt.tokenExpiration}")
+    private long TOKEN_EXPIRATION;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -39,7 +45,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 12))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRATION))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

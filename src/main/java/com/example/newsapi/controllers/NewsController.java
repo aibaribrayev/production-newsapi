@@ -89,7 +89,7 @@ public class NewsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);
         return ResponseEntity.noContent().build();
     }

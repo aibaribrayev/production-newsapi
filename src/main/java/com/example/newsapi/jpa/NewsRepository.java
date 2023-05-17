@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
     Page<News> findAll(Pageable pageable);
+
     @Query("SELECT n FROM News n WHERE n.source.id = :sourceId")
     Page<News> findBySourceId(@Param("sourceId") Long sourceId, Pageable pageable);
 

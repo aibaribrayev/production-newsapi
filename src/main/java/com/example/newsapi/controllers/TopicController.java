@@ -1,5 +1,5 @@
 package com.example.newsapi.controllers;
-import com.example.newsapi.dtos.AddTopicDto;
+import com.example.newsapi.dtos.AddTopicRequest;
 import com.example.newsapi.models.Topic;
 import com.example.newsapi.services.TopicServiceImpl;
 import org.springframework.hateoas.EntityModel;
@@ -40,7 +40,7 @@ public class TopicController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Topic> addTopic(@RequestBody AddTopicDto requestDTO) {
+    public ResponseEntity<Topic> addTopic(@RequestBody AddTopicRequest requestDTO) {
         Topic savedTopic = topicService.addTopic(requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -51,7 +51,7 @@ public class TopicController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTopic(@PathVariable Long id, @RequestBody AddTopicDto requestDTO){
+    public ResponseEntity<Object> updateTopic(@PathVariable Long id, @RequestBody AddTopicRequest requestDTO){
         Topic topic = topicService.updateTopic(id, requestDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -62,7 +62,7 @@ public class TopicController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteTopic(@PathVariable Long id) {
         topicService.deleteTopic(id);
         return ResponseEntity.noContent().build();
     }

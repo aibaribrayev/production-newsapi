@@ -21,7 +21,6 @@ public class SourcesStatisticsService {
     private final SourceRepository sourceRepository;
     private final List<String> contentList = Collections.synchronizedList(new ArrayList<>());
 
-
     public SourcesStatisticsService(NewsRepository newsRepository, SourceRepository sourceRepository) {
         this.newsRepository = newsRepository;
         this.sourceRepository = sourceRepository;
