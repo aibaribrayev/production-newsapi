@@ -39,9 +39,21 @@ public class SourcesStatisticsService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    //@Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void generateNewsStatistics() {
-        File file = new File("statistics_" + LocalDate.now().toString() + ".csv");
+        String rootDirectory = System.getProperty("user.dir");
+        String filePath = rootDirectory + "/statistics_" + LocalDate.now().toString() + ".csv";
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try(FileWriter fileWriter = new FileWriter(file, true)){
             fileWriter.append("Source ID,Source Name,Number of News").append(System.lineSeparator());
         } catch (IOException e) {

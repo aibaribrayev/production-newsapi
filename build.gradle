@@ -35,7 +35,7 @@ dependencies {
 }
 
 bootBuildImage {
-    imageName = 'newsapi'
+    imageName = 'testnewsapi'
     pullPolicy = 'IF_NOT_PRESENT'
 }
 

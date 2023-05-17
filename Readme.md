@@ -51,7 +51,7 @@ To authenticate with an already registered email send a post request to ```http:
     "password":"yourpassword"
 }
 ```
-If the account exists, then new JWT token will be generated for next 12 hours.
+If the account exists, then new JWT token will be generated for next 12 hours. You can change it in application.properties. 
 
 
 ### 2. News, Source and Task requests
