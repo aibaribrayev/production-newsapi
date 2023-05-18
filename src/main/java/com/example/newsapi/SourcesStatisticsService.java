@@ -44,12 +44,17 @@ public class SourcesStatisticsService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void generateNewsStatistics() {
         contentList.clear();
-        File file = new File("statistics_" + LocalDate.now().toString() + ".csv");
+        String folderPath = "stats/";
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            folder.mkdirs(); // Create the folder if it doesn't exist
+        }
 
-        try {
+        File file = new File(folderPath + "statistics" + LocalDate.now().toString() + ".csv");
+        try{
             if (file.createNewFile()) {
                 logger.info("New file created");
             }
@@ -65,6 +70,9 @@ public class SourcesStatisticsService {
 
         // Create threads and tasks
         List<Source> sources = sourceRepository.findAll();
+        if (sources.isEmpty()) {
+            return;
+        }
         int numThreads = (int) Math.ceil((double) sources.size() / 10); // Round up to the nearest integer
         ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
 

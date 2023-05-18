@@ -1,9 +1,11 @@
 version: '3.3'
 services:
   app:
-    image: aibaribray/newssapi:latest
+    image: newssapi:latest
     ports:
       - "8080:8080"
+    volumes:
+      - /Users/aibar/Projects/strong/newsapi:/workspace/stats
     depends_on:
       - database
   database:
