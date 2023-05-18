@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   app:
-    image: newssapi:latest
+    image: aibaribray/newssapi:latest
     ports:
       - "8080:8080"
     volumes:

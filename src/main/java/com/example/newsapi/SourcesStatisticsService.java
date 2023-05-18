@@ -44,7 +44,7 @@ public class SourcesStatisticsService {
         }
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void generateNewsStatistics() {
         contentList.clear();
         String folderPath = "stats/";
