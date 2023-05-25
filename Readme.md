@@ -14,7 +14,7 @@ You can also build a Docker image locally. I configured the "build.gradle" file 
 
 - First, make sure that Docker is running.
 - In the terminal navigate to the root directory of the project
-- and run ```./gradlew buildImage```. It will build an image called "newssapi:latest". 
+- and run ```./gradlew bootBuildImage```. It will build an image called "newssapi:latest". 
 - If you want to use this image instead of the image from my docker repository, open the docker-compose.yaml file and change the image for the "app" service from ```aibar/newssapi:latest``` to ```newssapi:latest```.
 - Save and run in the terminal ```docker-compose up```. 
 
